@@ -68,15 +68,15 @@ jobs:
           fi
           echo "name=$name" >> "$GITHUB_OUTPUT"
       - name: fetch and verify every file
-        run: cargo run --release --locked --bin language-packs -- fetch
+        run: cargo run --release --bin language-packs -- fetch
       - name: offline checks, sha256 and size, load-and-check per pack
-        run: cargo test --release --locked -p craft-i18n-tests --test packs -- --nocapture
+        run: cargo test --release -p craft-i18n-tests --test packs -- --nocapture
       - name: build packs and index.json
         if: steps.rel.outputs.name != ''
         env:
           RELEASE: ${{ steps.rel.outputs.name }}
         run: >
-          cargo run --release --locked --bin language-packs -- build
+          cargo run --release --bin language-packs -- build
           --out dist --release "$RELEASE" --version "$GITHUB_SHA" --no-download
       - name: keep the built assets
         if: steps.rel.outputs.name != ''
